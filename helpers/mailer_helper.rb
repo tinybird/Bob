@@ -20,19 +20,22 @@ module MailerHelper
     return "https://github.com/#{user}/#{project.name}/commit/#{revision.sha}"
   end
 
-	def is_ignored_file?(path)
-		path = path.downcase
-		ignored = [".png", ".jpg", ".tiff", ".svg", ".ico", ".icns", ".wav", ".m4a"]
-		ignored.each do |suffix|
-			if path.end_with?(suffix)
+ def is_ignored_file?(path)
+    path = path.downcase
+    ignored = [".png", ".jpg", ".tiff", ".svg", ".ico", ".icns",
+               ".wav", ".m4a",
+               ".nib", ".xib", ".pbxproj",
+               ".sqlite"]
+    ignored.each do |suffix|
+      if path.end_with?(suffix)
 				return true
 			end
 		end
-		return false
+    return false
 	end
 
   def is_binary?(str)
-	  # Use some heuretics: if more than X% of the characters are non-ascii, count
+	  # Use some heuristics: if more than X% of the characters are non-ascii, count
 	  # the string as binary (but hopefully not unicode).
 	  count = 0.0
 	  non_ascii_count = 0.0
