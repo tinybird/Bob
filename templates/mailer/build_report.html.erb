@@ -1,0 +1,114 @@
+<html>
+  <head>
+    <style>
+      h3 {
+        background-color: steelblue;
+        color: white;
+        -webkit-border-top-left-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+        padding: 3px;
+        padding-left: 5px;
+	      margin-bottom: 0px;
+      }
+
+      hr {
+        background-color: #eee;
+        margin: 0;
+        border: none;
+        border-top: 1px dashed #ccc;
+        height: 0.5em;
+      }
+
+      .revision-header {
+        font-family: Menlo, Consolas, Monaco;
+        font-size: 90%;
+        background-color: #eee;
+        margin-top: 0;
+        padding: 4px;
+      }
+
+      img {
+        float: right;
+        border: 1px solid #ccc;
+        -webkit-box-shadow: grey 1px 1px 5px;
+      }
+
+      pre {
+        font-family: Menlo, Consolas, Monaco;
+        font-size: 90%;
+        background-color: #eee;
+        margin-top: 0;
+        margin-bottom: 0;
+        padding: 4px;
+        padding-bottom: 1em;
+      }
+
+      pre.bottom {
+        -webkit-border-bottom-left-radius: 5px;
+        -webkit-border-bottom-right-radius: 5px;
+        padding-bottom: 0.5em;
+      }
+
+      .result {
+        font-size: 120%;
+        font-weight: bold;
+        margin: 0;
+        margin-left: 3px;
+      }
+
+      .succeeded {
+        color: #0a0;
+      }
+
+      .failed {
+        color: #c00;
+      }
+    </style>
+  </head>
+  <body>
+    <p class='result'>Result:
+      <span class='<%= @build.status %>'>The build <%= @build.status %></span>
+    </p>
+
+    <h3>BUILD SUMMARY</h3>
+  	<pre class="bottom"><%= @build.summary %></pre>
+
+    <h3>CHANGES</h3>
+    <%
+     first = @build.revisions.first
+     last = @build.revisions.last
+	
+     for revision in @build.revisions
+       author = revision.author_string
+
+       title = "Revision <a href='#{revision_url(@build.project, revision)}'>#{revision.sha[0..6]}</a> committed by #{h author}"
+       title << " on #{revision.date.strftime('%Y-%m-%d %H:%M:%S')}" if revision.date
+       title << "<img src='#{avatar_url(author)}'>"
+		
+       description = "\n\n    #{revision.message.split("\n").join("\n    ")}" if revision.message
+       description << "\n\n" if revision.stats
+       revision.stats.to_diffstat.each do |diffstat|
+       description << "#{diffstat.inspect}\n"
+     end
+	      
+     description << "\n\n" if revision.diffs
+     revision.diffs.each do |d|
+	   if is_ignored_file?(d.a_path) or is_binary?(d.diff)
+         description << "--- #{d.a_path}: Binary or ignored file type\n"
+         description << "+++ #{d.b_path}\n\n"
+	   else
+         description << "#{d.diff}\n\n"
+	   end
+     end
+     description << "\n"
+    %>
+    <%= "<hr>" unless revision == first %>
+    <div class="revision-header"><%= title %></div>
+    <pre class="<%= 'bottom' unless revision != last %>"><%= h description %></pre>
+    <% end %>
+
+    <h3>BUILD LOG</h3>
+    <pre class="bottom"><%= @build.log %></pre>
+
+  </body>
+</html>

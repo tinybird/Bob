@@ -1,0 +1,74 @@
+Bob the Builder
+===============
+
+Getting started:
+----------------
+
+You need grit 2.0 or newer (ruby git API):
+
+$ sudo gem install grit
+
+
+/Library/Ruby/Gems/1.8/gems/grit-2.0.0/lib/grit/git-ruby/internal/loose.rb
+needs to be patched until it has been updated from git:
+
+--- loose.rb.orig	2010-06-03 14:02:37.000000000 +0200
++++ loose.rb	2010-06-03 14:03:21.000000000 +0200
+@@ -29,7 +29,9 @@
+           begin
+             return nil unless sha1[0...2] && sha1[2..39]
+             path = @directory + '/' + sha1[0...2] + '/' + sha1[2..39]
+-            get_raw_object(File.read(path)
+           rescue Errno::ENOENT
+             nil
+           end
+
+
+Setting up site wide settings:
+------------------------------
+
+$ mkdir -p ~/.bob/projects/[Name of your project]
+$ cat > ~/.bob/site_config.rb << EOF
+ActionMailer::Base.smtp_settings = {
+  :tls =>            true,
+  :address =>        "smtp.gmail.com",
+  :port =>           587,
+  :domain =>         "yourdomain.com",
+  :authentication => :plain,
+  :user_name =>      "youremail@yourdomain.com",
+  :password =>       "yourpassword"
+}
+
+# Mandatory sender email address.
+Settings.sender = 'bobthebuilder@yourdomain.com'
+
+# Optional, whether or not to send emails when the code has changed even though there was
+# no change in status. Default is false.
+# Settings.email_when_no_status_change = false
+
+# Optional, amount of seconds to sleep between polling attemps. Default is 60.
+# Settings.sleep_duration = 60
+
+# Optional list of addresses to notify if the bot dies.
+# Settings.admin_email_addresses = [ 'me@domain.com' ]
+EOF
+
+
+Setting up a project:
+---------------------
+
+$ cat > ~/.bob/projects/[Name of your project]/config.rb << EOF
+Project.configure do |project|
+  project.url = 'git@github.com:username/repo.git'
+  project.email_addresses = ['anemail@yourdomain.com']
+
+  # Optional, if not specified, builtin Xcode build script is used.
+  # project.build_command = 'optional-build-tool'
+end
+EOF
+
+
+Starting the daemon:
+-----------------
+
+$ ./bob.rb

@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <style>
+      h3 {
+        background-color: steelblue;
+        color: white;
+        -webkit-border-top-left-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+        padding: 3px;
+        padding-left: 5px;
+	      margin-bottom: 0px;
+      }
+
+      pre {
+        font-family: Menlo, Consolas, Monaco;
+        font-size: 90%;
+        background-color: #eee;
+        margin-top: 0;
+        margin-bottom: 0;
+        padding: 4px;
+        padding-bottom: 1em;
+      }
+
+      pre.bottom {
+        -webkit-border-bottom-left-radius: 5px;
+        -webkit-border-bottom-right-radius: 5px;
+        padding-bottom: 0.5em;
+      }
+
+      .result {
+        font-size: 120%;
+        font-weight: bold;
+        margin: 0;
+        margin-left: 3px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <p class='result'>The build bot died.</p>
+
+    <h3>REASON</h3>
+  	<pre class="bottom"><%= @message %></pre>
+
+  </body>
+</html>
