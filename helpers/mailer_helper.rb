@@ -20,16 +20,19 @@ module MailerHelper
     return "https://github.com/#{user}/#{project.name}/commit/#{revision.sha}"
   end
 
- def is_ignored_file?(path)
+ def is_ignored_file?(project, path)
     path = path.downcase
     ignored = [".png", ".jpg", ".tiff", ".svg", ".ico", ".icns",
-               ".wav", ".m4a",
-               ".nib", ".xib", ".pbxproj",
+               ".wav", ".m4a", ".mp3",
+               ".nib", ".xib", ".xcodeproj", ".xcdatamodel",
                ".sqlite"]
+    ignored = ignored.concat(project.ignored_file_extensions)
     ignored.each do |suffix|
-      if path.end_with?(suffix)
-				return true
-			end
+      Pathname.new(path).each_filename do |component|
+        if component.end_with?(suffix)
+				  return true
+			  end
+		  end
 		end
     return false
 	end

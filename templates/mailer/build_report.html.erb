@@ -91,15 +91,19 @@
        description << "#{diffstat.inspect}\n"
      end
 	      
-     description << "\n\n" if revision.diffs
-     revision.diffs.each do |d|
-	   if is_ignored_file?(d.a_path) or is_binary?(d.diff)
-         description << "--- #{d.a_path}: Binary or ignored file type\n"
-         description << "+++ #{d.b_path}\n\n"
-	   else
-         description << "#{d.diff}\n\n"
+	   begin
+       description << "\n\n" if revision.diffs
+	     revision.diffs.each do |d|
+	 	     if is_ignored_file?(@build.project, d.a_path) or is_binary?(d.diff)
+	 	       description << "--- #{d.a_path}: Binary or ignored file type\n"
+				   description << "+++ #{d.b_path}\n\n"
+			   else
+				   description << "#{d.diff}\n\n"
+			   end
+		   end
+		 rescue Grit::Git::GitTimeout
+	     description << "*** Git timed out, probably a very large diff\n"
 	   end
-     end
      description << "\n"
     %>
     <%= "<hr>" unless revision == first %>

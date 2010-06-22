@@ -65,6 +65,9 @@ Project.configure do |project|
 
   # Optional, if not specified, builtin Xcode build script is used.
   # project.build_command = 'optional-build-tool'
+  
+  # Optional, list of ignored files in diffs.
+  # project.ignored_file_extensions = [ ".csv", ".bin" ]
 end
 EOF
 
