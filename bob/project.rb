@@ -4,7 +4,7 @@ require 'pathname'
 
 class Project
   attr_reader :name, :path
-  attr_accessor :email_addresses, :build_command, :build_options, :url, :ignored_file_extensions
+  attr_accessor :email_addresses, :build_command, :build_options, :url, :ignored_file_extensions, :enabled
 
   def self.all
     configs = Dir.glob(File.join(ENV['HOME'], '.bob/projects/*/config.rb'));
@@ -31,6 +31,7 @@ class Project
     @build_command = nil
     @build_options = {}
     @ignored_file_extensions = []
+    @enabled = true
   end
 
   def last_build_status
