@@ -22,10 +22,10 @@ module MailerHelper
 
  def is_ignored_file?(project, path)
     path = path.downcase
-    ignored = [".png", ".jpg", ".tiff", ".svg", ".ico", ".icns",
+    ignored = [".png", ".jpg", ".tiff", ".svg", ".ico", ".icns", ".pxm",
                ".wav", ".m4a", ".mp3",
                ".nib", ".xib", ".xcodeproj", ".xcdatamodel",
-               ".sqlite"]
+               ".sqlite", ".graffle"]
     ignored = ignored.concat(project.ignored_file_extensions)
     ignored.each do |suffix|
       Pathname.new(path).each_filename do |component|
