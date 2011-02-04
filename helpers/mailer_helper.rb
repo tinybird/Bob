@@ -23,7 +23,7 @@ module MailerHelper
  def is_ignored_file?(project, path)
     path = path.downcase
     ignored = [".png", ".jpg", ".tiff", ".svg", ".ico", ".icns", ".pxm",
-               ".wav", ".m4a", ".mp3",
+               ".wav", ".m4a", ".mp3", ",aif", ".caf",
                ".nib", ".xib", ".xcodeproj", ".xcdatamodel",
                ".sqlite", ".graffle", ".psd" ]
     ignored = ignored.concat(project.ignored_file_extensions)
