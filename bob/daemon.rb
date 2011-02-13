@@ -1,6 +1,6 @@
 # Load site configuration, for email settings and other global configuration.
-site_config = File.join(ENV['HOME'], '.bob', 'site_config')
-require site_config if File.exists?(site_config + ".rb")
+site_config = File.join(ENV['HOME'], '.bob', 'site_config.rb')
+load site_config if File.exists?(site_config)
 
 BobLogger.info "\n========================================================"
 BobLogger.info "Builder daemon started at #{Time.now}"
@@ -13,6 +13,9 @@ while(true) do
 	BobLogger.info ""
   projects.each do |project|
     if project.enabled
+      
+      load site_config if File.exists?(site_config)
+      
       BobLogger.info "Updating: #{project.name}"
 
       should_build = false
@@ -35,7 +38,7 @@ while(true) do
       end
 
       project.build(new_commits, previous_status) if should_build == true
-      sleep 5
+      sleep 1
     end
   end
 

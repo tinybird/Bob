@@ -24,6 +24,14 @@ class Project
     yield @project_to_configure
   end
 
+  def get_work_path
+    if Settings.build_root
+      return File.join(Settings.build_root, self.name, "work")
+    else
+      return File.join(self.path, "work")
+    end
+  end
+
   def initialize(path)
     @path = path
     @name = @path.basename.to_s
@@ -53,15 +61,16 @@ class Project
   def get_git_repository
     # Try to create a Grit::Repo for path
 
-    path = File.join(self.path, "work")
-    if File.exists?(self.path) && File.directory?(path)
-      system("cd #{File.join(self.path, 'work')} && git pull > /dev/null")
+    work_path = self.get_work_path
+    if File.exists?(work_path) && File.directory?(work_path)
+      system("cd #{work_path} && git pull > /dev/null")
     else
-      system("cd #{self.path} && git clone #{self.url} work > /dev/null")
+      parent = File.dirname(work_path)
+      system("mkdir -p #{parent} && cd #{parent} && git clone #{self.url} work > /dev/null")
     end
 
     begin
-      repo = Grit::Repo.new(File.join(self.path, 'work'))
+      repo = Grit::Repo.new(work_path)
       BobLogger.info "Repository with #{repo.commit_count} commits created for #{self.name}"
     rescue => e
       BobLogger.info("Failed to create repository for #{self.name} due to #{e}")
