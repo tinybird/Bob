@@ -28,7 +28,7 @@ class Build
     full_log = []
     failed_message = nil
     begin
-      Dir.chdir(File.join(@project.path, "work")) do
+      Dir.chdir(@project.get_work_path) do
         CommandLine::execute([command]) do |io|
           full_log = io.readlines
         end
