@@ -43,6 +43,11 @@ ActionMailer::Base.smtp_settings = {
 # Mandatory sender email address.
 Settings.sender = 'bobthebuilder@yourdomain.com'
 
+# Optional build root. If not set, the builds are put under ~/.bob. By using a separate
+# root, things like putting the .bob directory in Dropbox makes it possible to control
+# Bob remotely.
+Settings.build_root = '/my/build/root'
+
 # Optional, whether or not to send emails when the code has changed even though there was
 # no change in status. Default is false.
 # Settings.email_when_no_status_change = false
