@@ -47,7 +47,7 @@ class Project
       last_commit, previous_status = File.read(File.join(self.path, "build-status")).split(/\n/)
     rescue => e
       # Let's assume this is the first build if the status file can't be read.
-      BobLogger.info "Couldn't read previous build status: #{e}"
+      # BobLogger.info "Couldn't read previous build status: #{e}"
       previous_status = "fresh"
       last_commit = nil
     end
@@ -87,7 +87,11 @@ class Project
     if Settings.email_when_no_status_change or previous_status != build.status
       BobLogger.info "Sending build report"
       if Settings.sender
-        Mailer.send(:deliver_build_report, build, self.email_addresses,
+        addresses = self.email_addresses
+        if addresses.empty?
+          addresses = Settings.default_project_email_addresses
+        end
+        Mailer.send(:deliver_build_report, build, addresses,
                     Settings.sender, "#{self.name} #{build.status}, #{new_commits[0].id_abbrev}", "")
       end
     end

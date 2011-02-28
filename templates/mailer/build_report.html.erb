@@ -67,11 +67,11 @@
   </head>
   <body>
     <p class='result'>Result:
-      <span class='<%= @build.status %>'>The build <%= @build.status %></span>
+      <span class='<%= @build.status %>'>The build <%= raw @build.status %></span>
     </p>
 
     <h3>BUILD SUMMARY</h3>
-  	<pre class="bottom"><%= @build.summary %></pre>
+  	<pre class="bottom"><%= raw @build.summary %></pre>
 
     <h3>CHANGES</h3>
     <%
@@ -106,13 +106,13 @@
 	   end
      description << "\n"
     %>
-    <%= "<hr>" unless revision == first %>
-    <div class="revision-header"><%= title %></div>
+    <%= raw "<hr>" unless revision == first %>
+    <div class="revision-header"><%= raw title %></div>
     <pre class="<%= 'bottom' unless revision != last %>"><%= h description %></pre>
     <% end %>
 
     <h3>BUILD LOG</h3>
-    <pre class="bottom"><%= @build.log %></pre>
+    <pre class="bottom"><%= raw @build.log %></pre>
 
   </body>
 </html>

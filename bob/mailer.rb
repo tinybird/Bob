@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'action_mailer'
-require 'action_mailer_optional_tls/init'
 
 class Mailer < ActionMailer::Base
   helper :mailer
