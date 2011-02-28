@@ -47,7 +47,7 @@ class Project
       last_commit, previous_status = File.read(File.join(self.path, "build-status")).split(/\n/)
     rescue => e
       # Let's assume this is the first build if the status file can't be read.
-      # BobLogger.info "Couldn't read previous build status: #{e}"
+      BobLogger.debug "Couldn't read previous build status: #{e}"
       previous_status = "fresh"
       last_commit = nil
     end
@@ -71,7 +71,7 @@ class Project
 
     begin
       repo = Grit::Repo.new(work_path)
-      BobLogger.info "Repository with #{repo.commit_count} commits created for #{self.name}"
+      BobLogger.debug "Repository with #{repo.commit_count} commits created for #{self.name}"
     rescue => e
       BobLogger.info("Failed to create repository for #{self.name} due to #{e}")
       return nil
@@ -85,7 +85,7 @@ class Project
     build.build
     
     if Settings.email_when_no_status_change or previous_status != build.status
-      BobLogger.info "Sending build report"
+      BobLogger.debug "Sending build report"
       if Settings.sender
         addresses = self.email_addresses
         if addresses.empty?
@@ -96,7 +96,7 @@ class Project
       end
     end
     write_build_status(new_commits.last, build.status.to_s)
-    BobLogger.info "Build finished for #{self.name} with status '#{build.status.to_s}'"
+    BobLogger.debug "Build finished for #{self.name} with status '#{build.status.to_s}'"
   end
 
   def to_param

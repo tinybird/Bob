@@ -2,8 +2,10 @@
 site_config = File.join(ENV['HOME'], '.bob', 'site_config.rb')
 load site_config if File.exists?(site_config)
 
+BobLogger.get.level = Logger::INFO
+
 BobLogger.info "\n========================================================"
-BobLogger.info "Builder daemon started at #{Time.now}"
+BobLogger.info "#{Time.now.strftime('%Y-%m-%d %H:%M')} - Builder started, PID: #{Process.pid}."
 
 projects = Project.all
 BobLogger.info "Projects:"
@@ -28,9 +30,9 @@ while(true) do
         should_build = true
         new_commits = repo.commits('master', 1)
       else
-        BobLogger.info "Last built commit: #{last_commit}\nLatest available commit: #{repo.commits.first}"
+        BobLogger.debug "Last built commit: #{last_commit[0..6]}, newest: #{repo.commits.first.id_abbrev}"
         new_commits = repo.commits_between(last_commit, repo.commits.first)
-        if (new_commits.length > 0)
+        if (not new_commits.empty?)
           should_build = true
           BobLogger.info "#{new_commits.length} new commits:"
           new_commits.each { |commit| BobLogger.info "  #{commit.id_abbrev}"}
@@ -42,7 +44,7 @@ while(true) do
     end
   end
 
-  BobLogger.info "Builder #{Process.pid} still alive at #{Time.now}, sleeping..."
+  BobLogger.info "#{Time.now.strftime('%Y-%m-%d %H:%M')} - Builder alive, PID: #{Process.pid}. Sleeping for #{Settings.sleep_duration} seconds."
   sleep Settings.sleep_duration
 end
 
