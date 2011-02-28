@@ -57,6 +57,9 @@ Settings.build_root = '/my/build/root'
 
 # Optional list of addresses to notify if the bot dies.
 # Settings.admin_email_addresses = [ 'me@domain.com' ]
+
+# Optional list of default addresses to notify about build statuses.
+# Settings.default_project_email_addresses = [ 'me@domain.com' ]
 EOF
 
 
@@ -66,7 +69,9 @@ Setting up a project:
 $ cat > ~/.bob/projects/[Name of your project]/config.rb << EOF
 Project.configure do |project|
   project.url = 'git@github.com:username/repo.git'
-  project.email_addresses = ['anemail@yourdomain.com']
+  
+  # Overrides the global setting Settings.default_project_email_addresses.
+  # project.email_addresses = ['anemail@yourdomain.com']
 
   # Optional, if not specified, builtin Xcode build script is used.
   # project.build_command = 'optional-build-tool'
