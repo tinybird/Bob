@@ -25,7 +25,7 @@ module MailerHelper
     ignored = [".png", ".jpg", ".tiff", ".svg", ".ico", ".icns", ".pxm",
                ".wav", ".m4a", ".mp3", ".aif", ".caf", ".band",
                ".nib", ".xib", ".xcodeproj", ".xcdatamodel",
-               ".sqlite", ".graffle", ".psd" ]
+               ".sqlite", ".graffle", ".psd", ".xcf" ]
     ignored = ignored.concat(project.ignored_file_extensions)
     ignored.each do |suffix|
       Pathname.new(path).each_filename do |component|
