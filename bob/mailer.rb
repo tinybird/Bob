@@ -31,5 +31,5 @@ class Mailer < ActionMailer::Base
 
 end
 
-Mailer.template_root = File.dirname(__FILE__) + '/../templates'
+Mailer.prepend_view_path(File.dirname(__FILE__) + '/../templates')
 Mailer.logger = nil #BobLogger.get # for debugging
