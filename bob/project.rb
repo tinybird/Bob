@@ -91,8 +91,7 @@ class Project
         if addresses.empty?
           addresses = Settings.default_project_email_addresses
         end
-        Mailer.send(:deliver_build_report, build, addresses,
-                    Settings.sender, "#{self.name} #{build.status}, #{new_commits[0].id_abbrev}", "")
+        Mailer.build_report(build, addresses, Settings.sender, "#{self.name} #{build.status}, #{new_commits[0].id_abbrev}", "").deliver
       end
     end
     write_build_status(new_commits.last, build.status.to_s)

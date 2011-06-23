@@ -17,7 +17,6 @@ rescue => e
   BobLogger.info "Build bot died: #{e}"
   
   if Settings.sender and not Settings.admin_email_addresses.empty?
-     Mailer.send(:deliver_build_failure, Settings.admin_email_addresses,
-                 Settings.sender, "Build bot died", "#{e}")
+     Mailer.build_failure(Settings.admin_email_addresses, Settings.sender, "Build bot died", "#{e}").deliver
    end
 end
