@@ -7,10 +7,8 @@ class Mailer < ActionMailer::Base
   def build_report(build, recipients, from, subject, message)
     @subject      = "[Bob] #{subject.capitalize}"
     @content_type = "text/html"
-    @body         = {
-        :build => build,
-        :message => message
-    }
+    @build        = build
+    @message      = message
     @recipients   = recipients
     @from         = from
     @sent_on      = Time.now
@@ -20,9 +18,7 @@ class Mailer < ActionMailer::Base
   def build_failure(recipients, from, subject, message)
     @subject      = "[Bob] #{subject.capitalize}"
     @content_type = "text/html"
-    @body         = {
-        :message => message
-    }
+    @message      = message
     @recipients   = recipients
     @from         = from
     @sent_on      = Time.now
