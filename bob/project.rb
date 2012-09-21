@@ -4,7 +4,8 @@ require 'pathname'
 
 class Project
   attr_reader :name, :path
-  attr_accessor :email_addresses, :build_command, :build_options, :url, :ignored_file_extensions, :enabled
+  attr_accessor :email_addresses, :build_command, :build_options
+  attr_accessor :url, :ignored_file_extensions, :enabled
 
   def self.all
     configs = Dir.glob(File.join(ENV['HOME'], '.bob/projects/*/config.rb'));

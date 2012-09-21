@@ -21,6 +21,10 @@ def get_arguments(configuration, target)
   if sdk_name and sdk_name != ""
     args << "-sdk \"#{sdk_name}\" "
   end
+  arch = ENV['BOB_ARCH']
+  if arch and arch != ""
+    args << "-arch \"#{arch}\" "
+  end
   args    
 end  
 
